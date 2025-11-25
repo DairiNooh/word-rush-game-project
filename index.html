@@ -6,6 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 
+    <script src="./js/app.js" defer></script>
+
+
     <style>
 
         body,html {
@@ -36,10 +39,10 @@
 
         #instruction-section
         {
-            background-color: brown;
+            background-color: #f3f3f3;;
            height: 25%;
            width: 100%;
-           border: 1px solid black;
+           border: 1px solid #ccc;
              border-radius: 0.9em;
              overflow: hidden;
              
@@ -60,14 +63,16 @@
 
         #stats-section
         {
-           background-color: blue; 
+           background-color: #f3f3f3;; 
             display: flex;
-            
+            justify-content: center;
+            align-items: center;
+            gap: 4em;
             
             width: 100%;
-            height: 17%;
-            font-size: 1em;
-            border: 1px solid black;
+            height: 18%;
+            font-size: 1.1em;
+            border: 1px solid #ccc;
              border-radius: 0.9em;
              overflow: hidden;
         }
@@ -77,7 +82,7 @@
             
             justify-content: center;
             align-items: end;
-            background-color: beige;
+            
             width: 70%;
             height: 100%;
             display: flex;
@@ -92,7 +97,7 @@
 
         #stats-right
         {
-            background-color: bisque;
+            
             width: 30%;
             height: 100%;
             display: flex;
@@ -140,14 +145,14 @@
 
         #game-section
         {
-            background-color: yellow;
+            background-color: #f3f3f3;;
             height: 30%;
            width: 100%;
            display: flex;
            justify-content: center;
            align-items: center;
            font-size: 1.5em;
-          border: 1px solid black;
+          border: 1px solid #ccc;
              border-radius: 0.6em;
              overflow: hidden;
         }
@@ -168,10 +173,10 @@
 
         #result-section
         {
-            background-color: green;
+            background-color: #f3f3f3;;
             height: 25%;
             width: 100%;
-            border: 1px solid black;
+            border: 1px solid #ccc;
              border-radius: 0.7em;
              overflow: hidden;
              display: flex;
@@ -180,14 +185,23 @@
 
         #result-left
         {
-            background-color: gray;
+            
             width: 70%;
             height: 100%;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #result-left p
+        {
+            
         }
 
         #result-right
         {
-            background-color:blueviolet;
+            
             width: 30%;
             height: 100%;
             display: flex;
@@ -201,7 +215,13 @@
   text-decoration-color: red; 
   text-decoration-thickness: 2px;
 }
+.correct {
+    color: green;
+}
 
+.wrong {
+    color: red;
+}
 
 
         
@@ -219,21 +239,17 @@
             
         </div>
         <div id="stats-section">
-            <div id="stats-left">
+            
                 <div id="timer">Time: 0.0s</div>
                 <div id="wpm">WPM: 0/m</div>
-                <div id="score">Accuracy: 0.0%</div>
-            </div>
+                <div id="stats-accuracy">Accuracy: 0.0%</div>
+                <div id="stats-sentence">Sentences Completed: 0</div>
 
-            <div id="stats-right">
-                <button id="reset-btn" class="stats-btn">RESET</button>
-                <button id="difficulty-btn" class="stats-btn">Normal</button>
-            </div>
 
             
         </div>
         <div id="game-section">
-            <p><span class="underline">T</span>he quick brown fox jumps over the lazy dog. The quick brown fox jumps over the lazy dog. The quick brown fox jumps over the lazy dog.</p>
+            <p id="sentence"></p>
         </div>
         <div id="result-section">
       
@@ -243,7 +259,7 @@
 
             <div id="result-right">
                 <button id="reset-btn" class="stats-btn">RESET</button>
-                <button id="difficulty-btn" class="stats-btn">Normal</button>
+                <button id="difficulty-btn" class="stats-btn">Easy</button>
             </div>
         </div>
     </div>
