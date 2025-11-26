@@ -1,0 +1,127 @@
+body,
+html {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    background-color: #C4BBAF;
+}
+
+#container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 48%;
+    height: 90%;
+    text-align: center;
+    gap: 1.5em;
+}
+
+
+#instruction-section {
+    height: 25%;
+    border-radius: 0.9em;
+}
+
+#instruction-section h2 {
+    padding-top: 16px;
+}
+
+#instruction-section p {
+    font-size: 18px;
+    text-align: center;
+    width: 80%;
+    margin: 0 auto;
+}
+
+#stats-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 4em;
+    height: 18%;
+    font-size: 1.1em;
+    border-radius: 0.9em;
+}
+
+#game-section {
+    height: 30%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5em;
+    border-radius: 0.6em;
+}
+
+#game-section p {
+    width: 80%;
+    margin: 0 auto;
+    text-align: center;
+    letter-spacing: 2px;
+}
+
+#result-section {
+    height: 25%;
+    border-radius: 0.7em;
+    display: flex;
+}
+
+#result-section-left {
+    width: 70%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#result-section-right {
+    width: 30%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2em;
+}
+
+.section {
+    background-color: #A5978B;
+    width: 100%;
+    border: 1px solid #5C4742;
+    overflow: hidden;
+}
+
+.underline {
+    border-bottom: 3px solid red;
+    padding-bottom: 2px;
+}
+
+.correct {
+    color: green;
+}
+
+.wrong {
+    color: red;
+}
+
+#reset-btn {
+    background-color: #5A2A27;
+    color: #C4BBAF;
+}
+
+#difficulty-btn {
+    background-color: #8D5B4C;
+
+}
+
+.result-section-btn {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+}
