@@ -1,1 +1,1 @@
-![Screenshot](./img/website-img.png)
+![Screenshot](./img/website-img.jgp)
