@@ -8,6 +8,7 @@ const pElement = document.getElementById('sentence');
 const statsSentenceElement = document.getElementById('stats-sentence');
 const statsAccuracyElement = document.getElementById('stats-accuracy');
 const statsWPMElement = document.getElementById('stats-wpm');
+const footerPElement = document.getElementById('footer-p');
 
 /*-------------------------------- Constants --------------------------------*/
 // Array of sentences
@@ -36,6 +37,7 @@ let difficulty = 'Easy'; // i do not think we need this
 let requiredAccuracy = 60; // change it to target accuracy
 let totalTime = 60.0; // this is needed for wpm 
 let timeLeft = totalTime; 
+let startTimerBool = false;
 
 /*----------------------------- Event Listeners -----------------------------*/
 resetButtonElement.addEventListener('click', resetGame);
@@ -98,6 +100,7 @@ function changeGameDifficulty()
       difficultyButtonElement.textContent = 'Normal';
       totalTime = 50;
       requiredAccuracy = 75;
+      
 
     }
     else if(currentDifficulty == 'Normal')
@@ -113,7 +116,25 @@ function changeGameDifficulty()
       requiredAccuracy = 90;
     }
 
+    footerPElement.textContent = 'Complete all the sentences before the time runs out and achieve a accuracy of ' + requiredAccuracy + '% in order to win.';
+    //
     resetGame();
+}
+
+function startTimer() {
+    countdown = setInterval(() => {
+        timeLeft -= 0.1;
+        if (timeLeft < 0) timeLeft = 0;
+
+        const displayTime = timeLeft.toFixed(1).padStart(4, "0");
+        timerEl.textContent = `Time: ${displayTime}`;
+
+        if (timeLeft <= 0) {
+            clearInterval(countdown);
+            timeIsUp = true;
+            endGame();
+        }
+    }, 100);
 }
 
 function resetGame() {
@@ -145,24 +166,9 @@ function resetGame() {
     timerEl.textContent = `Time: ${timeLeft.toFixed(1).padStart(4, "0")}`;
 
     // Clear previous interval and start a new one
+    startTimerBool = false;
     clearInterval(countdown);
-    startTimer();
-}
-
-function startTimer() {
-    countdown = setInterval(() => {
-        timeLeft -= 0.1;
-        if (timeLeft < 0) timeLeft = 0;
-
-        const displayTime = timeLeft.toFixed(1).padStart(4, "0");
-        timerEl.textContent = `Time: ${displayTime}`;
-
-        if (timeLeft <= 0) {
-            clearInterval(countdown);
-            timeIsUp = true;
-            endGame();
-        }
-    }, 100);
+    
 }
 
 function calculateWPM()
@@ -175,6 +181,12 @@ function calculateWPM()
 function handleKeyPressed(e) 
 {
     
+    if(!startTimerBool)
+    {
+        startTimerBool = true;
+        startTimer();
+    }
+
     // Checks weather the key inputted is not a single characater
     // characters liek alt ctrl shift and caps lock and multi char so it will return
     if (e.key.length !== 1) return; 
@@ -195,7 +207,7 @@ function handleKeyPressed(e)
     }
 
     statsAccuracyElement.textContent = 'Accuracy: ' + getAccuracy() + '%';
-    statsWPMElement.textContent = 'WPM: ' + calculateWPM();
+    statsWPMElement.textContent = 'CPM: ' + calculateWPM();
 
      // Move forward
     currentIndex++;
@@ -267,21 +279,10 @@ function getAccuracy() {
 /*-------------------------------- Main --------------------------------*/
 statsSentenceElement.textContent = 'Sentences Completed: ' + sentencesCompleted + '/' + sentences.length;
 statsAccuracyElement.textContent = 'Accuracy: 0.0%';
+footerPElement.textContent = 'Complete all the sentences before the time runs out and achieve a accuracy of ' + requiredAccuracy + '% in order to win.';
+timerEl.textContent = `Time: ${timeLeft.toFixed(1).padStart(4, "0")}`;
+
 renderSentence(); // first time render
 
 // 
-document.addEventListener("keydown", handleKeyPressed)
-
-let countdown = setInterval(() => {
-    timeLeft -= 0.1;
-    if (timeLeft < 0) timeLeft = 0;
-
-    const displayTime = timeLeft.toFixed(1).padStart(4, "0");
-    timerEl.textContent = `Time: ${displayTime}`;
-
-    if (timeLeft <= 0) {
-        clearInterval(countdown);
-        timeIsUp = true;
-        endGame();
-    }
-}, 100);
+document.addEventListener("keydown", handleKeyPressed);
