@@ -1,7 +1,7 @@
 
 
 /*------------------------ Cached Element References ------------------------*/
-const timerEl = document.getElementById("timer");
+const timerEl = document.getElementById("stats-timer");
 const resetButtonElement = document.querySelector('#reset-btn');
 const difficultyButtonElement = document.querySelector('#difficulty-btn');
 const pElement = document.getElementById('sentence');
@@ -38,6 +38,7 @@ let requiredAccuracy = 60; // change it to target accuracy
 let totalTime = 60.0; // this is needed for wpm 
 let timeLeft = totalTime; 
 let startTimerBool = false;
+let countdown;
 
 /*----------------------------- Event Listeners -----------------------------*/
 resetButtonElement.addEventListener('click', resetGame);
@@ -129,6 +130,8 @@ function startTimer() {
         const displayTime = timeLeft.toFixed(1).padStart(4, "0");
         timerEl.textContent = `Time: ${displayTime}`;
 
+        statsWPMElement.textContent = 'CPM: ' + calculateWPM();
+
         if (timeLeft <= 0) {
             clearInterval(countdown);
             timeIsUp = true;
@@ -152,7 +155,7 @@ function resetGame() {
     // Reset stats display
     statsSentenceElement.textContent = 'Sentences Completed: ' + sentencesCompleted + '/' + sentences.length;
     statsAccuracyElement.textContent = 'Accuracy: 0.0%';
-    statsWPMElement.textContent = 'WPM: 0';
+    statsWPMElement.textContent = 'CPM: 0';
 
     // Reset sentences
     unusedSentences = [...sentences];
@@ -216,6 +219,9 @@ function handleKeyPressed(e)
     if (currentIndex >= plainChars.length)
     {
         sentencesCompleted++;
+
+        statsSentenceElement.textContent = 'Sentences Completed: ' + sentencesCompleted + '/' + sentences.length;
+
 
         if (unusedSentences.length === 0) {
         endGame();
