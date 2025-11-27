@@ -10,9 +10,9 @@ const footerPElement = document.getElementById('footer-p');
 
 /*-------------------------------- Constants --------------------------------*/
 const sentences = [
-    "The quick brown fox jumps over the lazy dog.",
+    "Knowledge is power, but applied knowledge creates results.",
     "A journey of a thousand miles begins with a single step.",
-    "All work and no play makes Jack a dull boy.",
+    "Debugging code is like solving a challenging puzzle.",
     "Practice makes perfect. Keep trying and never give up.",
     "Learning JavaScript is fun and powerful!"
 ];
