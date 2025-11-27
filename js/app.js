@@ -1,5 +1,3 @@
-
-
 /*------------------------ Cached Element References ------------------------*/
 const timerEl = document.getElementById("stats-timer");
 const resetButtonElement = document.querySelector('#reset-btn');
@@ -11,7 +9,6 @@ const statsWPMElement = document.getElementById('stats-wpm');
 const footerPElement = document.getElementById('footer-p');
 
 /*-------------------------------- Constants --------------------------------*/
-// Array of sentences
 const sentences = [
     "The quick brown fox jumps over the lazy dog.",
     "A journey of a thousand miles begins with a single step.",
@@ -21,22 +18,18 @@ const sentences = [
 ];
 
 /*-------------------------------- Variables --------------------------------*/
-// --- Sentence Setup ---
 let currentIndex = 0;
-//let currentSentence = getRandomSentence();
 let unusedSentences = [...sentences];
 let sentencesCompleted = 0;
 let timeIsUp = false;
 let currentSentence = getNextSentence();
-let displayChars = currentSentence.split(""); // NEW: store the actual displayed characters
-// Accuracy
+let displayChars = currentSentence.split("");
 let totalInputtedChars = 0;
 let totalCorrectCharsInputted = 0;
-
-let difficulty = 'Easy'; // i do not think we need this
-let requiredAccuracy = 60; // change it to target accuracy
-let totalTime = 60.0; // this is needed for wpm 
-let timeLeft = totalTime; 
+let difficulty = 'Easy';
+let requiredAccuracy = 60;
+let totalTime = 60.0;
+let timeLeft = totalTime;
 let startTimerBool = false;
 let countdown;
 
@@ -45,80 +38,68 @@ resetButtonElement.addEventListener('click', resetGame);
 difficultyButtonElement.addEventListener('click', changeGameDifficulty);
 
 /*-------------------------------- Functions --------------------------------*/
-function getNextSentence()
-{
-
-    
+function getNextSentence() {
+    // Increments sentences completed
     statsSentenceElement.textContent = 'Sentences Completed: ' + sentencesCompleted + '/' + sentences.length;
 
-    if(unusedSentences.length == 0)
-    {
+    // Condition to check if there are no more unusedSentences just return
+    if (unusedSentences.length == 0) {
         console.log('all sentences used');
         return;
     }
 
-    // getting random index
+    // Getting a random index using Math.random() that gives random float between 0 and 1 and we use Math.Floor so it becomes a whole number
     const randomIndex = Math.floor(Math.random() * unusedSentences.length);
 
-    // getting the sentence
+    // Getting the sentence using the randomIndex
     const chosenSentence = unusedSentences[randomIndex];
 
-    // removing the chosenSentence from unusedsentences
+    // Removing the chosenSentence from unusedsentences
     unusedSentences.splice(randomIndex, 1);
 
     return chosenSentence;
 
 }
 
-function endGame()
-{
-    clearInterval(countdown); // stops time
-    
+function endGame() {
+    // Stops the time
+    clearInterval(countdown);
 
+    // Getting the final accuracy
     const finalAccuracy = getAccuracy() || 0;
 
-    if(finalAccuracy >= requiredAccuracy && sentencesCompleted == sentences.length)
-    {
+    // Condition to check if the accuracy meets teh accuracy threshold and that all sentences were inputted, if so display win message
+    if (finalAccuracy >= requiredAccuracy && sentencesCompleted == sentences.length) {
         pElement.textContent = 'YOU WIN!!';
     }
-    else
-    {
+    // if not display lose message
+    else {
         pElement.textContent = 'YOU LOSE!!';
     }
-
 }
 
-function changeGameDifficulty()
-{
+function changeGameDifficulty() {
 
     difficultyButtonElement.blur();
 
-    //difficultyButtonElement.textContent = 'changed';
-    //console.log('the current value is: ' + difficultyButtonElement.textContent);
     let currentDifficulty = difficultyButtonElement.textContent;
-    if(currentDifficulty == 'Easy')
-    {
-      difficultyButtonElement.textContent = 'Normal';
-      totalTime = 50;
-      requiredAccuracy = 75;
-      
-
+    if (currentDifficulty == 'Easy') {
+        difficultyButtonElement.textContent = 'Normal';
+        totalTime = 50;
+        requiredAccuracy = 75;
     }
-    else if(currentDifficulty == 'Normal')
-    {
-      difficultyButtonElement.textContent = 'Hard';
-      totalTime = 45;
-      requiredAccuracy = 90;
+    else if (currentDifficulty == 'Normal') {
+        difficultyButtonElement.textContent = 'Hard';
+        totalTime = 45;
+        requiredAccuracy = 90;
     }
-    else if(difficultyButtonElement.textContent == 'Hard')
-    {
-      difficultyButtonElement.textContent = 'Easy';
-      totalTime = 60;
-      requiredAccuracy = 90;
+    else if (difficultyButtonElement.textContent == 'Hard') {
+        difficultyButtonElement.textContent = 'Easy';
+        totalTime = 60;
+        requiredAccuracy = 60;
     }
 
     footerPElement.textContent = 'Complete all the sentences before the time runs out and achieve a accuracy of ' + requiredAccuracy + '% in order to win.';
-    //
     resetGame();
 }
 
@@ -144,7 +125,6 @@ function resetGame() {
 
     resetButtonElement.blur();
 
-    // Reset all counters
     currentIndex = 0;
     sentencesCompleted = 0;
     totalInputtedChars = 0;
@@ -152,53 +132,47 @@ function resetGame() {
 
     timeIsUp = false;
 
-    // Reset stats display
     statsSentenceElement.textContent = 'Sentences Completed: ' + sentencesCompleted + '/' + sentences.length;
     statsAccuracyElement.textContent = 'Accuracy: 0.0%';
     statsWPMElement.textContent = 'CPM: 0';
-
-    // Reset sentences
     unusedSentences = [...sentences];
     currentSentence = getNextSentence();
     displayChars = currentSentence.split("");
     displayChars[0] = `<span class="underline">${displayChars[0]}</span>`;
     pElement.innerHTML = displayChars.join("");
 
-    // Reset timer
     timeLeft = totalTime;
     timerEl.textContent = `Time: ${timeLeft.toFixed(1).padStart(4, "0")}`;
 
-    // Clear previous interval and start a new one
     startTimerBool = false;
     clearInterval(countdown);
-    
 }
 
-function calculateWPM()
-{
-    const elapsedTime = (totalTime - timeLeft) / 60; // minutes
-    if (elapsedTime === 0) return 0; // prevent division by 0
+function calculateWPM() {
+    const elapsedTime = (totalTime - timeLeft) / 60;
+    if (elapsedTime === 0) return 0;
     return Math.round(totalCorrectCharsInputted / 5 / elapsedTime);
 }
 
-function handleKeyPressed(e) 
-{
-    
-    if(!startTimerBool)
-    {
+function handleKeyPressed(e) {
+    // Prevent input if game is over
+    if (timeIsUp || sentencesCompleted >= sentences.length) return;
+
+    // Only start the timer when the Player has begun to input. I had to add this because when you start the game by defualt time will start which I do not want
+    if (!startTimerBool) {
         startTimerBool = true;
         startTimer();
     }
 
     // Checks weather the key inputted is not a single characater
-    // characters liek alt ctrl shift and caps lock and multi char so it will return
-    if (e.key.length !== 1) return; 
+    // characters like alt ctrl shift and caps lock and multi char so it will return
+    if (e.key.length !== 1) return;
 
     totalInputtedChars++;
-    // Don't create new chars — use displayChars
+
     let plainChars = currentSentence.split("");
 
-     // Mark correct / wrong
+    // Here i added correct or wrong span to the chars
     if (e.key === plainChars[currentIndex]) {
         totalCorrectCharsInputted++;
 
@@ -212,21 +186,19 @@ function handleKeyPressed(e)
     statsAccuracyElement.textContent = 'Accuracy: ' + getAccuracy() + '%';
     statsWPMElement.textContent = 'CPM: ' + calculateWPM();
 
-     // Move forward
     currentIndex++;
 
-    // Prevent typing past end
-    if (currentIndex >= plainChars.length)
-    {
+    // This here prrevent typing past end
+    if (currentIndex >= plainChars.length) {
         sentencesCompleted++;
 
         statsSentenceElement.textContent = 'Sentences Completed: ' + sentencesCompleted + '/' + sentences.length;
 
 
         if (unusedSentences.length === 0) {
-        endGame();
-        return;
-    }
+            endGame();
+            return;
+        }
 
         currentSentence = getNextSentence();
         currentIndex = 0;
@@ -237,8 +209,8 @@ function handleKeyPressed(e)
 
         return;
     }
-    
-    // Add underline to next char
+
+    // Adding underline to the currenIndex so user can know which one to type
     if (currentIndex < plainChars.length) {
         displayChars[currentIndex] =
             `<span class="underline">${plainChars[currentIndex]}</span>`;
@@ -249,24 +221,22 @@ function handleKeyPressed(e)
 }
 
 // Render the sentence with underline on the current index
-function renderSentence()
- {
+function renderSentence() {
     // turns the entire sentence into a array f chars letter
-    displayChars  = currentSentence.split("");// i do not think we nede this
+    displayChars = currentSentence.split("");
 
     // Getting the current letter the user is on and wraping it in span tag that has
     // a class underline and displaying the letter 
     displayChars[currentIndex] = `<span class="underline">${displayChars[currentIndex]}</span>`;
 
     // combines all the char back to sentence and displays it in the p tag
-    // i used innerHTML because using textcontent will not interpret the span tag
-    // it would jsut show the actual span tag sytax
+    // I used innerHTML because using textcontent will not interpret the span tag
+    // it would jsut show the actual span tag syntax
     pElement.innerHTML = displayChars.join("");
 }
 
 // This function returns a random sentence from the sentences arrays
-function getRandomSentence()
-{
+function getRandomSentence() {
     // Sets the current index to 0 since a new sentence will be retrived
     currentIndex = 0;
 
@@ -277,8 +247,14 @@ function getRandomSentence()
 }
 
 function getAccuracy() {
-    if (totalInputtedChars === 0) return ; // before typing
-    return ((totalCorrectCharsInputted / totalInputtedChars) * 100).toFixed(1);
+    // Returns 0 if no char is inputted becasue the accuracy will be just 0
+    if (totalInputtedChars === 0) {
+        return;
+    }
+    else {
+        // Returns the accuracy by dividing the total inputted chars to the total chars and multiply it by 100
+        return ((totalCorrectCharsInputted / totalInputtedChars) * 100).toFixed(1);
+    }
 }
 
 
@@ -288,7 +264,8 @@ statsAccuracyElement.textContent = 'Accuracy: 0.0%';
 footerPElement.textContent = 'Complete all the sentences before the time runs out and achieve a accuracy of ' + requiredAccuracy + '% in order to win.';
 timerEl.textContent = `Time: ${timeLeft.toFixed(1).padStart(4, "0")}`;
 
-renderSentence(); // first time render
+// Renders the first sentence when game starts
+renderSentence();
 
-// 
+// Listens to any key pressed
 document.addEventListener("keydown", handleKeyPressed);
